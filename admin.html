@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>admin · nosushidesu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .box{margin-bottom:28px}
+  .box h2{font-size:1.5rem;margin-bottom:14px}
+  .evs{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+  .ev{background:#fff;border-radius:14px;padding:14px;border:2.5px dashed var(--peri);cursor:pointer}
+  .ev.on{border-style:solid;border-color:var(--hot);background:var(--pink)}
+  .ev b{font-family:var(--round);display:block}
+  .ev small{font-weight:600;color:var(--ink-soft)}
+  .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:0 16px}
+  .form-grid .wide{grid-column:1/-1}
+  .bar-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:12px}
+  .bar-tools button.f{font:600 .85rem var(--round);border:0;border-radius:999px;padding:6px 14px;cursor:pointer;background:#fff;box-shadow:0 0 0 2px var(--line);color:var(--ink)}
+  .bar-tools button.f.on{background:var(--peri)}
+  .tbl{width:100%;border-collapse:collapse;font-size:.9rem;background:#fff;border-radius:12px;overflow:hidden}
+  .tbl th,.tbl td{padding:9px 10px;text-align:left;border-bottom:1px solid #eee8f5;vertical-align:top}
+  .tbl th{background:var(--sky);font-family:var(--round);font-weight:600}
+  .tbl td.act{white-space:nowrap}
+  .tbl td.act button{font:600 .78rem var(--round);border:0;border-radius:8px;padding:5px 9px;cursor:pointer;margin:1px;color:var(--ink)}
+  .b-ok{background:var(--mint)} .b-up{background:var(--peri)} .b-no{background:var(--rose)} .b-wait{background:var(--butter)}
+  .pill{font-size:.74rem;font-weight:700;padding:2px 9px;border-radius:999px}
+  .pill.confirmed{background:var(--mint)} .pill.waitlist{background:var(--butter)} .pill.cancelled{background:var(--rose)} .pill.attended{background:var(--lilac)}
+  .scroll{overflow-x:auto}
+  .stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+  .stats span{background:#fff;border-radius:12px;padding:6px 12px;font-weight:700;box-shadow:0 0 0 2px var(--line)}
+  #toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);z-index:99}
+</style>
+</head>
+<body>
+<main class="wrap" style="padding-top:30px;padding-bottom:60px">
+  <div class="sec-title"><span class="label">ssst, khusus sushi</span><h2>admin room</h2></div>
+
+  <div class="paper box" id="login" style="max-width:420px;margin:0 auto">
+    <span class="tape check tc"></span>
+    <form id="login-form"><div class="field"><label>admin key</label><input id="key" type="password" required></div><button class="btn" style="width:100%">masuk ♡</button></form>
+  </div>
+
+  <div id="app" hidden>
+    <div class="paper box"><span class="tape stripe tl"></span>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+        <h2 style="margin:0">event</h2><button class="btn sm mint" id="new-ev">+ event baru</button>
+      </div>
+      <div class="evs" id="evs"></div>
+    </div>
+
+    <div class="paper box" id="ev-form-box" hidden><span class="tape peri tr"></span>
+      <h2 id="ev-form-title">event baru</h2>
+      <form id="ev-form" class="form-grid">
+        <input type="hidden" name="id">
+        <div class="field"><label>judul event</label><input name="title" required></div>
+        <div class="field"><label>slug <small>(link: /events.html?e=slug)</small></label><input name="slug" required pattern="[a-z0-9-]+" placeholder="jaemin-day-cafe"></div>
+        <div class="field"><label>kategori</label><select name="category"><option>Free Cafe Event</option><option>Photoframe</option><option>Freebies</option><option>Concert Project</option><option>Birthday Support</option><option>Watch Party</option><option>Gathering</option><option>Lainnya</option></select></div>
+        <div class="field"><label>tanggal</label><input name="event_date" type="date"></div>
+        <div class="field"><label>jam <small>(bebas, mis. 13.00–17.00 WIB)</small></label><input name="event_time"></div>
+        <div class="field"><label>lokasi</label><input name="venue"></div>
+        <div class="field"><label>kuota slot</label><input name="capacity" type="number" min="1" value="50" required></div>
+        <div class="field"><label>waiting list</label><select name="waitlist_enabled"><option value="1">dibuka</option><option value="0">tidak ada</option></select></div>
+        <div class="field"><label>status</label><select name="status"><option value="open">open (RSVP dibuka)</option><option value="closed">closed (RSVP ditutup)</option><option value="done">done (event selesai)</option></select></div>
+        <div class="field"><label>tampil di website</label><select name="visibility"><option value="public">public</option><option value="hidden">hidden (draft)</option></select></div>
+        <div class="field wide"><label>deskripsi <small>(boleh beberapa paragraf)</small></label><textarea name="description" rows="5"></textarea></div>
+        <div class="wide" style="display:flex;gap:10px"><button class="btn">simpan ♡</button><button type="button" class="btn white" id="cancel-ev">batal</button></div>
+      </form>
+    </div>
+
+    <div class="paper box" id="rsvp-box" hidden><span class="tape dots tl"></span>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:10px">
+        <h2 style="margin:0" id="rsvp-title">peserta</h2>
+        <div style="display:flex;gap:8px"><button class="btn sm butter" id="edit-ev">edit event</button><button class="btn sm blue" id="csv">download CSV</button></div>
+      </div>
+      <div class="stats" id="stats"></div>
+      <div class="bar-tools">
+        <button class="f on" data-f="">semua</button><button class="f" data-f="confirmed">terdaftar</button><button class="f" data-f="waitlist">waiting list</button><button class="f" data-f="attended">hadir</button><button class="f" data-f="cancelled">batal</button>
+        <input class="input" id="q" placeholder="cari nama / username / kode" style="max-width:260px;padding:7px 12px">
+      </div>
+      <div class="scroll"><table class="tbl"><thead><tr><th>#</th><th>kode</th><th>nama</th><th>username</th><th>email / WA</th><th>status</th><th>catatan</th><th>aksi</th></tr></thead><tbody id="rows"></tbody></table></div>
+    </div>
+  </div>
+  <div id="toast"></div>
+</main>
+
+<script src="/assets/deco.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+const $=s=>document.querySelector(s);
+let KEY=sessionStorage.getItem('nsd_key')||'', events=[], cur=null, rsvps=[], filt='';
+const api=(path,opt={})=>NSD.getJSON('/api/admin/'+path,{...opt,headers:{'x-admin-key':KEY,'content-type':'application/json',...(opt.headers||{})}});
+const toast=(t,c='ok')=>{$('#toast').innerHTML=`<div class="msg ${c}">${NSD.esc(t)}</div>`;setTimeout(()=>$('#toast').innerHTML='',2600)};
+
+$('#login-form').onsubmit=e=>{e.preventDefault();KEY=$('#key').value;boot()};
+if(KEY) boot();
+
+async function boot(){
+  try{ await loadEvents(); sessionStorage.setItem('nsd_key',KEY); $('#login').hidden=true; $('#app').hidden=false }
+  catch(e){ sessionStorage.removeItem('nsd_key'); toast(e.status===401?'admin key salah':e.message,'err') }
+}
+async function loadEvents(){
+  events=(await api('events')).events;
+  $('#evs').innerHTML=events.map(ev=>`<div class="ev ${cur&&cur.id===ev.id?'on':''}" data-id="${ev.id}">
+    <b>${NSD.esc(ev.title)}</b><small>${NSD.fmtDate(ev.event_date).full} · ${ev.status}${ev.visibility==='hidden'?' · hidden':''}</small><br>
+    <small>✿ ${ev.confirmed_count}/${ev.capacity} · ⏳ ${ev.waitlist_count} antre</small></div>`).join('')||'<p class="empty">belum ada event. klik "+ event baru" ♡</p>';
+}
+$('#evs').onclick=e=>{const c=e.target.closest('.ev'); if(!c) return; cur=events.find(x=>x.id==c.dataset.id); loadEvents(); loadRsvps(); $('#ev-form-box').hidden=true};
+
+/* form event */
+function openForm(ev){
+  const f=$('#ev-form'); f.reset();
+  $('#ev-form-title').textContent=ev?'edit event':'event baru';
+  f.elements.id.value='';
+  if(ev){ for(const [k,v] of Object.entries(ev)){ if(f.elements[k]) f.elements[k].value=v??'' } }
+  $('#ev-form-box').hidden=false; $('#ev-form-box').scrollIntoView({behavior:'smooth'});
+}
+$('#new-ev').onclick=()=>openForm(null);
+$('#edit-ev').onclick=()=>openForm(cur);
+$('#cancel-ev').onclick=()=>$('#ev-form-box').hidden=true;
+$('#ev-form').elements.title.addEventListener('input',e=>{const s=$('#ev-form').elements.slug; if(!$('#ev-form').elements.id.value) s.value=e.target.value.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')});
+$('#ev-form').onsubmit=async e=>{
+  e.preventDefault();
+  const d=Object.fromEntries(new FormData(e.target));
+  try{ const r=await api('events',{method:'POST',body:JSON.stringify(d)}); toast('event tersimpan ♡'); $('#ev-form-box').hidden=true; cur={id:r.id}; await loadEvents(); cur=events.find(x=>x.id==r.id); loadRsvps() }
+  catch(err){ toast(err.message,'err') }
+};
+
+/* peserta */
+async function loadRsvps(){
+  if(!cur) return;
+  rsvps=(await api('rsvps?event_id='+cur.id)).rsvps;
+  $('#rsvp-box').hidden=false;
+  $('#rsvp-title').textContent='peserta · '+cur.title;
+  const n=s=>rsvps.filter(r=>r.status===s).length;
+  $('#stats').innerHTML=`<span>✿ terdaftar ${n('confirmed')+n('attended')}/${cur.capacity}</span><span>⏳ waiting ${n('waitlist')}</span><span>♡ hadir ${n('attended')}</span><span>✖ batal ${n('cancelled')}</span>`;
+  drawRows();
+}
+function drawRows(){
+  const q=$('#q').value.toLowerCase();
+  let w=0;
+  const list=rsvps.filter(r=>(!filt||r.status===filt)&&(!q||[r.name,r.handle,r.code,r.email].join(' ').toLowerCase().includes(q)));
+  $('#rows').innerHTML=list.map((r,i)=>{
+    const pos=r.status==='waitlist'?` #${rsvps.filter(x=>x.status==='waitlist'&&x.id<=r.id).length}`:'';
+    const acts=[];
+    if(r.status==='confirmed') acts.push(['attended','b-ok','✔ hadir'],['cancelled','b-no','✖ batal']);
+    if(r.status==='waitlist') acts.push(['confirmed','b-up','↑ masukkan'],['cancelled','b-no','✖ batal']);
+    if(r.status==='attended') acts.push(['confirmed','b-wait','↺ belum hadir']);
+    if(r.status==='cancelled') acts.push(['waitlist','b-wait','↺ ke waiting list']);
+    return `<tr><td>${i+1}</td><td><b>${NSD.esc(r.code)}</b></td><td>${NSD.esc(r.name)}</td><td>${NSD.esc(r.handle)}</td>
+      <td>${NSD.esc(r.email)}<br><small>${NSD.esc(r.phone||'')}</small></td>
+      <td><span class="pill ${r.status}">${r.status}${pos}</span></td><td>${NSD.esc(r.note||'')}</td>
+      <td class="act">${acts.map(a=>`<button class="${a[1]}" data-id="${r.id}" data-s="${a[0]}">${a[2]}</button>`).join('')}</td></tr>`;
+  }).join('')||'<tr><td colspan="8" class="empty">belum ada peserta</td></tr>';
+}
+document.querySelector('.bar-tools').onclick=e=>{const b=e.target.closest('button.f'); if(!b) return; filt=b.dataset.f; document.querySelectorAll('button.f').forEach(x=>x.classList.toggle('on',x===b)); drawRows()};
+$('#q').oninput=drawRows;
+$('#rows').onclick=async e=>{
+  const b=e.target.closest('button[data-s]'); if(!b) return;
+  if(b.dataset.s==='cancelled'&&!confirm('batalkan RSVP ini? kalau dia terdaftar, orang pertama di waiting list otomatis naik.')) return;
+  try{ const r=await api('rsvps/'+b.dataset.id,{method:'POST',body:JSON.stringify({status:b.dataset.s})});
+    toast(r.promoted?`status diubah · ${r.promoted} naik dari waiting list ♡`:'status diubah ♡'); await loadEvents(); cur=events.find(x=>x.id===cur.id); loadRsvps() }
+  catch(err){ toast(err.message,'err') }
+};
+$('#csv').onclick=()=>{
+  const cols=['code','name','handle','email','phone','status','note','created_at'];
+  const csv=[cols.join(',')].concat(rsvps.map(r=>cols.map(c=>`"${String(r[c]??'').replace(/"/g,'""')}"`).join(','))).join('\n');
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob(['﻿'+csv],{type:'text/csv'})); a.download=(cur.slug||'rsvp')+'.csv'; a.click();
+};
+</script>
+</body>
+</html>

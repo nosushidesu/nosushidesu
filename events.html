@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>events & RSVP · nosushidesu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  .two{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;align-items:start}
+  .detail h1{font-size:clamp(1.9rem,5vw,2.6rem);margin:8px 0}
+  .detail .meta{display:grid;gap:4px;font-weight:600;color:var(--ink-soft);margin:10px 0 16px}
+  .detail .desc{white-space:pre-line;line-height:32px}
+  .form-card{transform:rotate(.8deg)}
+  .form-card h2{font-size:1.6rem;margin-bottom:14px}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:.9rem;font-weight:500;margin:6px 0 16px}
+  .check input{width:20px;height:20px;accent-color:var(--hot);margin-top:3px;flex:none}
+  .code{font-family:var(--round);font-size:1.8rem;font-weight:700;letter-spacing:3px;background:#fff;border:2.5px dashed var(--hot);border-radius:12px;display:inline-block;padding:4px 16px;margin:6px 0}
+  .status-box{max-width:560px;margin:50px auto 0}
+  .status-box form{display:flex;gap:10px;flex-wrap:wrap}
+  .status-box input{flex:1;min-width:180px;text-transform:uppercase}
+  .list{display:grid;gap:24px;max-width:780px;margin:0 auto}
+  .past h3{font-family:var(--hand);font-size:1.6rem;text-align:center;margin:44px 0 16px}
+  .past .ticket{opacity:.75;filter:saturate(.7)}
+  @media (max-width:800px){.two{grid-template-columns:1fr}.form-card{transform:none}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/"><span class="dot">🍣</span><b>nosushidesu</b></a>
+    <ul class="tabs">
+      <li><a href="/">home</a></li>
+      <li><a href="/projects.html">projects</a></li>
+      <li><a href="/events.html">events</a></li>
+      <li><a href="/#links">links</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="view"><p class="empty">memuat... ✦</p></section>
+
+  <!-- cek status RSVP -->
+  <div class="paper grid status-box" style="transform:rotate(-1deg)">
+    <span class="tape check tl"></span>
+    <h2 style="font-size:1.4rem;margin-bottom:6px">cek status RSVP-mu</h2>
+    <p style="font-size:.92rem;margin-bottom:12px;color:var(--ink-soft);font-weight:600">masukkan kode tiket yang kamu dapat waktu RSVP (contoh: JJ-7K2M9Q)</p>
+    <form id="check-form"><input class="input" id="code-in" placeholder="JJ-XXXXXX" required><button class="btn sm blue">cek ✦</button></form>
+    <div id="check-out"></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="paper scallop"><span class="tape stripe tl"></span><p class="hand" style="font-size:1.4rem;color:var(--ink)">see you there ♡</p><p>nosushidesu · fan-made, non-profit</p></div></footer>
+
+<script src="/assets/deco.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+const $=s=>document.querySelector(s), view=$('#view');
+const slug=new URLSearchParams(location.search).get('e');
+const STATUS_TXT={
+  confirmed:['ok','✿ kamu terdaftar! slot kamu sudah aman.'],
+  waitlist:['wait','✦ kamu masuk waiting list. kalau ada slot kosong, statusmu otomatis naik jadi terdaftar.'],
+  attended:['ok','♡ sudah hadir, makasih udah datang!'],
+  cancelled:['err','RSVP ini dibatalkan.']
+};
+
+if(!slug) listView(); else detailView(slug);
+
+async function listView(){
+  try{
+    const {events=[]}=await NSD.getJSON('/api/events');
+    const up=events.filter(e=>e.status!=='done'), past=events.filter(e=>e.status==='done');
+    view.innerHTML=`<div class="sec-title"><span class="label">come hang out</span><h2>events & RSVP</h2></div>
+      <div class="list">${up.length?up.map(NSD.ticket).join(''):'<p class="empty">belum ada event baru, stay tuned ya ♡</p>'}</div>
+      ${past.length?`<div class="list past"><h3>event yang sudah lewat ✦</h3>${past.map(NSD.ticket).join('')}</div>`:''}`;
+  }catch(e){ view.innerHTML='<p class="empty">event belum bisa dimuat. coba refresh ya ♡</p>' }
+}
+
+async function detailView(slug){
+  let ev;
+  try{ ev=(await NSD.getJSON('/api/events?slug='+encodeURIComponent(slug))).event }
+  catch(e){ view.innerHTML='<p class="empty">event tidak ditemukan 🥺 <br><a class="btn sm" href="/events.html">lihat semua event</a></p>'; return }
+  const dt=NSD.fmtDate(ev.event_date);
+  const left=Math.max(ev.capacity-ev.confirmed_count,0);
+  const full=left<=0, open=ev.status==='open';
+  const canJoin=open&&(!full||ev.waitlist_enabled);
+  const pct=Math.min(100,Math.round(ev.confirmed_count/ev.capacity*100));
+  document.title=ev.title+' · nosushidesu';
+
+  view.innerHTML=`<div class="two">
+    <div class="paper lined holes detail"><span class="tape stripe tl"></span>
+      ${ev.category?`<span class="stamp">${NSD.esc(ev.category)}</span>`:''}
+      <h1>${NSD.esc(ev.title)}</h1>
+      <div class="meta"><span>📅 ${dt.full}${ev.event_time?' · '+NSD.esc(ev.event_time):''}</span>${ev.venue?`<span>📍 ${NSD.esc(ev.venue)}</span>`:''}</div>
+      <div class="slots"><div class="bar"><i style="width:${pct}%"></i></div>
+        <small>${full?`slot penuh${ev.waitlist_enabled?` · ${ev.waitlist_count} orang di waiting list`:''}`:`sisa <b>${left}</b> dari ${ev.capacity} slot`}</small></div>
+      <p class="desc">${NSD.esc(ev.description||'')}</p>
+    </div>
+
+    <div class="paper form-card"><span class="tape check tr"></span>
+      ${canJoin?`
+      <h2>${full?'join waiting list ✦':'RSVP di sini ✿'}</h2>
+      <form id="rsvp">
+        <div class="field"><label>nama panggilan</label><input name="name" required maxlength="60"></div>
+        <div class="field"><label>username X / IG <small>(buat verifikasi)</small></label><input name="handle" required maxlength="40" placeholder="@username"></div>
+        <div class="field"><label>email</label><input name="email" type="email" required maxlength="120"></div>
+        <div class="field"><label>no. WhatsApp <small>(opsional)</small></label><input name="phone" inputmode="tel" maxlength="20" placeholder="08xx"></div>
+        <div class="field"><label>catatan <small>(opsional)</small></label><textarea name="note" rows="2" maxlength="300"></textarea></div>
+        <div class="hp"><label>website<input name="website" tabindex="-1" autocomplete="off"></label></div>
+        <label class="check"><input type="checkbox" required> data ini cuma dipakai untuk keperluan event ini dan tidak dibagikan ke siapa pun.</label>
+        <button class="btn" style="width:100%">${full?'masuk waiting list':'kirim RSVP'} ♡</button>
+      </form><div id="out"></div>`
+      :`<h2>RSVP ditutup</h2><p class="hand" style="font-size:1.3rem">${!open?'pendaftaran untuk event ini sudah ditutup.':'slot sudah penuh 🥺'} pantau update di sosmedku ya ♡</p>`}
+    </div></div>`;
+  NSD_paint && NSD_paint();
+
+  const f=$('#rsvp'); if(!f) return;
+  f.addEventListener('submit',async e=>{
+    e.preventDefault();
+    const btn=f.querySelector('button'); btn.disabled=true; btn.textContent='mengirim...';
+    const data=Object.fromEntries(new FormData(f)); data.slug=slug;
+    try{
+      const r=await NSD.getJSON('/api/rsvp',{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(data)});
+      f.remove(); $('#out').innerHTML=resultHTML(r); NSD_confetti(r.status==='confirmed'?80:40);
+    }catch(err){
+      btn.disabled=false; btn.textContent='coba lagi ♡';
+      $('#out').innerHTML=`<div class="msg err">${NSD.esc(err.message)}</div>`;
+    }
+  });
+}
+
+function resultHTML(r){
+  const [cls,txt]=STATUS_TXT[r.status]||['wait',r.status];
+  return `<div class="msg ${cls}">${r.duplicate?'email ini sudah pernah RSVP. ini datamu:<br>':''}${txt}
+    ${r.status==='waitlist'&&r.position?`<br>posisi antrean: <b>#${r.position}</b>`:''}
+    <br>kode tiketmu:<br><span class="code">${NSD.esc(r.code)}</span><br><small>screenshot / simpan kode ini ya, dipakai buat cek status & saat datang.</small></div>`;
+}
+
+$('#check-form').addEventListener('submit',async e=>{
+  e.preventDefault();
+  const code=$('#code-in').value.trim().toUpperCase();
+  try{
+    const r=await NSD.getJSON('/api/rsvp?code='+encodeURIComponent(code));
+    $('#check-out').innerHTML=`<p style="margin-top:12px;font-weight:700">${NSD.esc(r.event_title)} · a.n. ${NSD.esc(r.name)}</p>`+resultHTML(r);
+  }catch(err){ $('#check-out').innerHTML=`<div class="msg err">${NSD.esc(err.message)}</div>` }
+});
+</script>
+</body>
+</html>

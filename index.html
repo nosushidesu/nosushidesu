@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>nosushidesu ♡ for JJ</title>
+<meta name="description" content="nosushidesu, fan account untuk NCT Jeno & Jaemin (Nomin / JenJaem). Project, event, freebies & RSVP.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Gaegu:wght@400;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/style.css">
+<style>
+  /* HERO scrapbook spread */
+  .hero{position:relative;padding:50px 0 30px}
+  .spread{display:grid;grid-template-columns:300px 1fr;gap:40px;align-items:center}
+  .avatar-wrap{position:relative;transform:rotate(-4deg)}
+  .avatar-wrap .polaroid .ph{background:linear-gradient(90deg,rgba(243,189,196,.4) 50%,transparent 50%),linear-gradient(rgba(243,189,196,.4) 50%,transparent 50%),#fff;background-size:22px 22px}
+  .avatar-wrap .ph .sticker{width:70%}
+  .profile-card{transform:rotate(1deg)}
+  .profile-card h1{font-size:clamp(2.4rem,7vw,3.6rem);line-height:1.1;margin-bottom:2px}
+  .typing{font-family:var(--hand);font-size:1.7rem;font-weight:700;color:#c76d9f;min-height:32px}
+  .typing::after{content:"|";animation:blink 1s steps(1) infinite;margin-left:2px}
+  @keyframes blink{50%{opacity:0}}
+  .rows{list-style:none;margin:6px 0 8px}
+  .rows li{display:flex;gap:12px}
+  .rows b{font-family:var(--hand);font-size:1.3rem;min-width:70px;color:var(--blue)}
+  .bio{line-height:32px;font-weight:500}
+  .cta{display:flex;flex-wrap:wrap;gap:14px;margin-top:20px}
+  .hint{text-align:center;font-family:var(--hand);font-size:1.15rem;font-weight:700;color:var(--ink-soft);margin-top:34px}
+
+  /* JJ corner: flip polaroids */
+  .jj{display:grid;grid-template-columns:1fr 90px 1fr;gap:10px;align-items:center;max-width:760px;margin:0 auto}
+  .flip{perspective:900px;cursor:pointer}
+  .flip-in{position:relative;transition:transform .7s cubic-bezier(.3,1.4,.5,1);transform-style:preserve-3d}
+  .flip.on .flip-in{transform:rotateY(180deg)}
+  .face,.back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+  .back{position:absolute;inset:0;transform:rotateY(180deg);display:flex;flex-direction:column;justify-content:center;padding:26px;text-align:center}
+  .back p{font-family:var(--hand);font-size:1.45rem;font-weight:700;line-height:1.3}
+  .flip:nth-child(1){transform:rotate(-3deg)} .flip:nth-child(3){transform:rotate(3deg)}
+  .heart-mid{text-align:center}
+  .heart-mid .sticker{width:70px;animation:beat 1.2s ease-in-out infinite}
+  @keyframes beat{0%,100%{scale:1}15%{scale:1.18}30%{scale:1}45%{scale:1.12}}
+  .flip-hint{text-align:center;font-family:var(--hand);font-size:1.2rem;font-weight:700;color:var(--ink-soft);margin-top:16px}
+  .bdays{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:760px;margin:36px auto 0}
+  .bday{text-align:center;padding:20px}
+  .bday .num{font-family:var(--round);font-size:2.8rem;font-weight:700;color:#c76d9f;line-height:1}
+  .bday .hand{font-size:1.3rem}
+
+  /* Project categories */
+  .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:22px}
+  .cat{text-decoration:none;text-align:center;padding:24px 14px 18px;border-radius:10px;background:var(--c);position:relative;box-shadow:var(--shadow);transition:transform .2s}
+  .cat::before{content:"";position:absolute;inset:7px;border:2.5px dashed #fff;border-radius:6px;pointer-events:none}
+  .cat:nth-child(odd){transform:rotate(-1.5deg)} .cat:nth-child(even){transform:rotate(1.5deg)}
+  .cat:hover{transform:rotate(0) translateY(-6px) scale(1.04)}
+  .cat .ic{font-size:2.4rem;display:block}
+  .cat h3{font-size:1.1rem;margin:6px 0 4px}
+  .cat small{font-weight:700;color:var(--ink-soft);background:#fffc;padding:2px 10px;border-radius:999px}
+
+  /* links */
+  .links{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+  .link{display:block;text-decoration:none;text-align:center;padding:16px 26px;min-width:200px;border-radius:999px;background:var(--c);box-shadow:inset 0 -4px 0 rgba(0,0,0,.06),0 0 0 3px #fff,var(--shadow);transition:transform .2s}
+  .link:hover{transform:translateY(-4px) rotate(-2deg)}
+  .link b{font-family:var(--round);font-size:1.1rem;display:block}
+  .link small{font-weight:600;color:var(--ink-soft)}
+
+  @media (max-width:760px){
+    .spread{grid-template-columns:1fr;gap:30px}
+    .avatar-wrap{max-width:240px;margin:0 auto}
+    .jj{grid-template-columns:1fr;max-width:300px}
+    .heart-mid .sticker{width:54px}
+    .flip:nth-child(1),.flip:nth-child(3){transform:none}
+    [data-m-hide]{display:none}
+    .ticker{margin:10px 0}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a class="brand" href="/"><span class="dot">🍣</span><b>nosushidesu</b></a>
+    <ul class="tabs">
+      <li><a href="/">home</a></li>
+      <li><a href="/projects.html">projects</a></li>
+      <li><a href="/events.html">events</a></li>
+      <li><a href="/#links">links</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="wrap">
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <!-- stiker yang bisa digeser -->
+    <i class="sticker deco drag wiggle" data-icon="bow" data-color="#f39cc0" style="width:74px;top:0;left:2%"></i>
+    <i class="sticker deco drag float" data-icon="star" data-color="#bfc4ff" style="width:52px;top:18%;right:2%"></i>
+    <i class="sticker deco drag" data-icon="heart" data-color="#f3bdc4" style="width:46px;bottom:12%;left:30%" data-m-hide></i>
+    <i class="sticker deco drag float" data-icon="cloud" data-color="#ffffff" style="width:90px;top:-6px;right:28%"></i>
+    <i class="sticker deco drag wiggle" data-icon="flower" data-color="#b2f9e7" style="width:44px;bottom:6%;right:6%"></i>
+    <i class="sticker deco drag" data-icon="bow" data-color="#fff1b8" style="width:56px;bottom:30%;left:-6px"></i>
+
+    <div class="spread">
+      <div class="avatar-wrap">
+        <div class="polaroid">
+          <span class="tape check tc"></span>
+          <div class="ph" id="avatar"><i class="sticker float" data-icon="sushi"></i></div>
+          <div class="cap" id="cap">it's me, sushi!</div>
+        </div>
+      </div>
+
+      <div class="paper lined holes profile-card">
+        <span class="tape stripe tr"></span>
+        <h1 id="name">nosushidesu</h1>
+        <div class="typing" id="typing"></div>
+        <ul class="rows" id="rows"></ul>
+        <p class="bio" id="bio"></p>
+        <div class="cta">
+          <a class="btn" href="/events.html">✿ RSVP event</a>
+          <a class="btn blue" href="/projects.html">lihat project</a>
+        </div>
+      </div>
+    </div>
+    <p class="hint">psst... stikernya bisa digeser-geser ✦</p>
+  </header>
+
+  <div class="ticker"><div class="ticker-track" id="ticker"></div></div>
+
+  <!-- ============ JJ CORNER ============ -->
+  <section id="jj">
+    <div class="sec-title"><span class="label">my whole heart</span><h2>JJ corner</h2></div>
+    <div class="jj">
+      <div class="flip" data-who="jeno">
+        <div class="flip-in">
+          <div class="polaroid face"><span class="tape peri tl"></span><div class="ph" style="background:var(--sky)" data-ph></div><div class="cap">Jeno 💙</div></div>
+          <div class="polaroid back paper grid"><p data-note></p></div>
+        </div>
+      </div>
+      <div class="heart-mid"><i class="sticker" data-icon="heart" data-color="#f39cc0"></i></div>
+      <div class="flip" data-who="jaemin">
+        <div class="flip-in">
+          <div class="polaroid face"><span class="tape stripe tr"></span><div class="ph" style="background:var(--pink)" data-ph></div><div class="cap">Jaemin 💗</div></div>
+          <div class="polaroid back paper grid"><p data-note></p></div>
+        </div>
+      </div>
+    </div>
+    <p class="flip-hint">tap fotonya buat dibalik ♡</p>
+
+    <div class="bdays">
+      <div class="paper grid bday reveal" style="--r:-1.5deg"><span class="tape dots tc"></span>
+        <div class="hand">menuju ultah Jeno 🎂</div><div class="num" id="bd-jeno">-</div><div class="hand">hari lagi · 23 April</div></div>
+      <div class="paper grid bday reveal" style="--r:1.5deg"><span class="tape check tc"></span>
+        <div class="hand">menuju ultah Jaemin 🎂</div><div class="num" id="bd-jaemin">-</div><div class="hand">hari lagi · 13 Agustus</div></div>
+    </div>
+  </section>
+
+  <!-- ============ EVENTS ============ -->
+  <section id="events">
+    <div class="sec-title"><span class="label">come hang out</span><h2>upcoming events</h2></div>
+    <div id="event-list" style="display:grid;gap:22px;max-width:760px;margin:0 auto"><p class="empty">memuat event... ✦</p></div>
+    <p style="text-align:center;margin-top:24px"><a class="btn mint" href="/events.html">semua event & cek status RSVP</a></p>
+  </section>
+
+  <!-- ============ PROJECTS ============ -->
+  <section id="projects">
+    <div class="sec-title"><span class="label">made with love</span><h2>my projects</h2></div>
+    <div class="cats" id="cats"></div>
+  </section>
+
+  <!-- ============ LINKS ============ -->
+  <section id="links">
+    <div class="sec-title"><span class="label">find me here</span><h2>links</h2></div>
+    <div class="links" id="links-box"></div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="paper scallop" data-gems="10" style="position:relative">
+    <span class="tape stripe tl"></span><span class="tape peri tr"></span>
+    <p class="hand" style="font-size:1.4rem;color:var(--ink)">made with love for JJ ♡</p>
+    <p>nosushidesu · fan-made, non-profit · not affiliated with SM Entertainment</p>
+  </div>
+</footer>
+
+<script src="/data/site.js"></script>
+<script src="/assets/deco.js"></script>
+<script src="/assets/app.js"></script>
+<script>
+const S = window.SITE, $ = s=>document.querySelector(s);
+
+/* isi dari data/site.js */
+$('#name').textContent = S.name;
+document.title = S.name + ' ♡ for JJ';
+if(S.avatar) $('#avatar').innerHTML = `<img src="${S.avatar}" alt="${NSD.esc(S.name)}">`;
+$('#cap').textContent = `it's me, ${S.nickname}!`;
+$('#rows').innerHTML = S.profile.map(([k,v])=>`<li><b>${NSD.esc(k)}</b><span>${NSD.esc(v)}</span></li>`).join('');
+$('#bio').textContent = S.bio;
+const tk = S.ticker.map(t=>`<span>✦ ${NSD.esc(t)}</span>`).join('');
+$('#ticker').innerHTML = tk + tk;
+const linkColors=['var(--rose)','var(--peri)','var(--mint)','var(--butter)','var(--pink)'];
+$('#links-box').innerHTML = S.links.map(([l,u,s],i)=>`<a class="link" style="--c:${linkColors[i%5]}" href="${NSD.esc(u)}" target="_blank" rel="noopener"><b>${NSD.esc(l)}</b><small>${NSD.esc(s)}</small></a>`).join('');
+
+/* efek ketik */
+(function type(){
+  const el=$('#typing'); let li=0,ci=0,del=false;
+  (function step(){
+    const w=S.typing[li]; el.textContent=w.slice(0,ci);
+    if(!del&&ci<w.length){ci++;setTimeout(step,70)}
+    else if(!del){del=true;setTimeout(step,1600)}
+    else if(ci>0){ci--;setTimeout(step,35)}
+    else{del=false;li=(li+1)%S.typing.length;setTimeout(step,300)}
+  })();
+})();
+
+/* JJ flip cards */
+document.querySelectorAll('.flip').forEach(f=>{
+  const who=S[f.dataset.who];
+  f.querySelector('[data-ph]').innerHTML = who.photo ? `<img src="${who.photo}" alt="">` : `<span style="font-size:4.5rem">${who.emoji}</span>`;
+  f.querySelector('[data-note]').textContent = who.note;
+  f.addEventListener('click',()=>{f.classList.toggle('on'); if(f.classList.contains('on')) NSD_confetti(14)});
+});
+
+/* hitung mundur ultah */
+function daysTo(m,d){
+  const now=new Date(); now.setHours(0,0,0,0);
+  let t=new Date(now.getFullYear(),m-1,d); if(t<now) t.setFullYear(t.getFullYear()+1);
+  return Math.round((t-now)/864e5);
+}
+$('#bd-jeno').textContent = daysTo(4,23) || '🎉 hari ini!';
+$('#bd-jaemin').textContent = daysTo(8,13) || '🎉 hari ini!';
+
+/* event dari database */
+NSD.getJSON('/api/events').then(r=>{
+  const list=(r.events||[]).filter(e=>e.status!=='done').slice(0,3);
+  $('#event-list').innerHTML = list.length ? list.map(NSD.ticket).join('') : '<p class="empty">belum ada event baru, stay tuned ya ♡</p>';
+}).catch(()=>{ $('#event-list').innerHTML='<p class="empty">event akan muncul di sini setelah website online ♡</p>' });
+
+/* kategori project */
+NSD.getJSON('/data/projects.json').then(d=>{
+  $('#cats').innerHTML = d.categories.map(c=>{
+    const n=d.projects.filter(p=>p.category===c.id).length;
+    return `<a class="cat" style="--c:${c.color}" href="/projects.html?c=${c.id}"><span class="ic">${c.icon}</span><h3>${NSD.esc(c.label)}</h3><small>${n} project</small></a>`;
+  }).join('');
+});
+</script>
+</body>
+</html>

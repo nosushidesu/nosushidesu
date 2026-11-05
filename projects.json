@@ -1,0 +1,54 @@
+{
+  "_cara_edit": "Tambah project = copy satu blok {...} di 'projects', ganti isinya. category harus sama dengan salah satu id di 'categories'. status: ongoing / upcoming / done. image boleh kosong atau '/img/nama-file.jpg'. Hapus semua project yang ada kata (contoh).",
+
+  "categories": [
+    { "id": "photoframe", "label": "Photoframe",        "icon": "📸", "color": "#ffe7ff", "desc": "Photoframe & photobooth frame buat momen JJ." },
+    { "id": "cafe",       "label": "Free Cafe Event",   "icon": "☕", "color": "#b2f9e7", "desc": "Cafe event gratis buat kumpul bareng sesama fans." },
+    { "id": "led",        "label": "LED Ads",           "icon": "💡", "color": "#bfc4ff", "desc": "Iklan LED / billboard untuk ulang tahun & anniversary." },
+    { "id": "freebies",   "label": "Freebies",          "icon": "🎁", "color": "#f3bdc4", "desc": "Bagi-bagi freebies: photocard, sticker, keychain, dll." },
+    { "id": "concert",    "label": "Concert Project",   "icon": "🎤", "color": "#c6e4e2", "desc": "Project konser: banner, slogan, fan support." },
+    { "id": "birthday",   "label": "Birthday Support",  "icon": "🎂", "color": "#fff6cf", "desc": "Cupsleeve, kue, dan support ulang tahun Jeno & Jaemin." },
+    { "id": "charity",    "label": "Donation",          "icon": "🌱", "color": "#dcedff", "desc": "Donasi & charity atas nama JJ." },
+    { "id": "gathering",  "label": "Watch Party",       "icon": "📺", "color": "#e9ddff", "desc": "Nobar comeback, streaming party, dan gathering." },
+    { "id": "fanworks",   "label": "Fanworks",          "icon": "✍️", "color": "#ffe7ff", "desc": "Fanfic, fanart, zine, dan karya lain buat JJ." }
+  ],
+
+  "projects": [
+    {
+      "title": "Jeno Birthday Photoframe (contoh)",
+      "category": "photoframe",
+      "date": "2026-04-23",
+      "status": "done",
+      "desc": "Contoh isi: photoframe spesial ulang tahun Jeno, tersedia di 3 cafe partner.",
+      "image": "",
+      "link": ""
+    },
+    {
+      "title": "Jaemin Day Free Cafe (contoh)",
+      "category": "cafe",
+      "date": "2026-08-13",
+      "status": "done",
+      "desc": "Contoh isi: free cafe event, 100 slot, minuman gratis + cupsleeve.",
+      "image": "",
+      "link": ""
+    },
+    {
+      "title": "Nomin LED Ads (contoh)",
+      "category": "led",
+      "date": "2027-02",
+      "status": "upcoming",
+      "desc": "Contoh isi: LED ads di pusat kota selama 7 hari.",
+      "image": "",
+      "link": ""
+    },
+    {
+      "title": "Nomin AU Oneshot",
+      "category": "fanworks",
+      "date": "2026",
+      "status": "ongoing",
+      "desc": "AU oneshot Jeno & Jaemin, ditulis part by part.",
+      "image": "",
+      "link": ""
+    }
+  ]
+}
